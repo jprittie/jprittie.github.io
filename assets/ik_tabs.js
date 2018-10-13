@@ -153,18 +153,9 @@
 		// ADDED: if event target is a panel, then focus should move to the associated tab
 		if (event.target.id.includes('panel')) {
 			switch (event.keyCode) {
-				// case ik_utils.keys.left:
 				case ik_utils.keys.up:
 					$($tabs[ind]).focus();
 					break;
-				// case ik_utils.keys.right:
-				// case ik_utils.keys.down:
-				// 	$($tabs[ind]).focus();
-				// 	break;
-				case ik_utils.keys.space:
-					event.preventDefault();
-					event.stopPropagation();
-					return false;
 			}
 		} else {
 			// ADDED else: if event target is a tab, focus moves to an adjoining tab
