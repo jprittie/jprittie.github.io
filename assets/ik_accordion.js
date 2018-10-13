@@ -99,31 +99,55 @@
 				$hdr = $(el);
 				$btn = $hdr.find('.button');
 
-				if($btn[0] != $(event.currentTarget)[0]) {
+				if(($btn[0] != $(event.currentTarget)[0]) || $(event.currentTarget).hasClass('expanded') ) {
+				// if ($btn.hasClass('expanded')) {
 					$btn.removeClass('expanded');
 					$btn.attr({
 						'aria-expanded': false // toggle expanded state
 					});
+					$hdr.next().attr({
+						'aria-hidden': true
+					})
 					$hdr.next().slideUp(plugin.options.animationSpeed);
+				// } else if ($btn[0] = $(event.currentTarget)[0]){
 				} else {
 					$btn.addClass('expanded');
 					$btn.attr({
 						'aria-expanded': true, // toggle expanded state
 					});
 					$hdr.next().slideDown(plugin.options.animationSpeed);
+					$hdr.next().attr({
+						'aria-hidden': false
+					})
 				}
 			});
 
 		} else { // toggle current panel depending on the state
 
 			isVisible = !!$panel.is(':visible');
+			if (isVisible) {
+				$panel.attr({
+					'aria-hidden': true
+				});
+				$me.parent('dt').find('.button').attr({
+					'aria-expanded': false
+				});
+			} else {
+				$panel.attr({
+					'aria-hidden': false
+				});
+				$me.parent('dt').find('.button').attr({
+					'aria-expanded': true
+				});
+			}
+
 			$panel.slideToggle({ duration: plugin.options.animationSpeed });
 
 		}
 	};
 
 	/**
-     * Handles keydown event on header button.
+     * Handles keydown event on header
      *
      * @param {Object} event - Keyboard event.
      * @param {object} event.data - Event data.
