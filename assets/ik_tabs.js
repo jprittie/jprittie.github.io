@@ -52,6 +52,8 @@
 					'tabindex': 0 // add to tab order
 				})
 				.addClass('ik_tabpanel')
+				// ADDED: keydown functionality to panels
+				.on('keydown', {'plugin': plugin, 'index': i}, plugin.onKeyDown) // add keyboard event handler
 				.hide();
 
 				lbl = $panel.attr('title'); // get tab label from panel title
@@ -148,21 +150,42 @@
 		$tabs = plugin.tabs;
 		$panels = plugin.panels;
 
-		switch (event.keyCode) {
-			case ik_utils.keys.left:
-			case ik_utils.keys.up:
-				next = ind > 0 ? --ind : 2;
-				plugin.selectTab({data:{'plugin': plugin, 'index': next}});
-				break;
-			case ik_utils.keys.right:
-			case ik_utils.keys.down:
-				next = ind < $tabs.length - 1 ? ++ind : 0;
-				plugin.selectTab({data:{'plugin': plugin, 'index': next}});
-				break;
-			case ik_utils.keys.space:
-				event.preventDefault();
-				event.stopPropagation();
-				return false;
+		// ADDED: if event target is a panel, then focus should move to the associated tab
+		if (event.target.id.includes('panel')) {
+			switch (event.keyCode) {
+				// case ik_utils.keys.left:
+				case ik_utils.keys.up:
+					$($tabs[ind]).focus();
+					break;
+				// case ik_utils.keys.right:
+				// case ik_utils.keys.down:
+				// 	$($tabs[ind]).focus();
+				// 	break;
+				case ik_utils.keys.space:
+					event.preventDefault();
+					event.stopPropagation();
+					return false;
+			}
+		} else {
+			// ADDED else: if event target is a tab, focus moves to an adjoining tab
+			switch (event.keyCode) {
+				case ik_utils.keys.left:
+				case ik_utils.keys.up:
+					// ADDED: new logic for switching tabs
+					next = ind > 0 ? --ind : 2;
+					plugin.selectTab({data:{'plugin': plugin, 'index': next}});
+					break;
+				case ik_utils.keys.right:
+				case ik_utils.keys.down:
+					// ADDED: new logic for switching tabs
+					next = ind < $tabs.length - 1 ? ++ind : 0;
+					plugin.selectTab({data:{'plugin': plugin, 'index': next}});
+					break;
+				case ik_utils.keys.space:
+					event.preventDefault();
+					event.stopPropagation();
+					return false;
+			}
 		}
 	}
 
