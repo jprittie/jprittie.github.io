@@ -123,9 +123,7 @@
 
 		plugin.timer = setInterval(plugin.gotoSlide, plugin.options.animationSpeed, {'data':{'plugin': plugin, 'slide': 'right'}});
 
-		console.log('event.type', event.type);
 		if (event.type === 'focusout') {
-		// if (event.type === 'blur') {
 			plugin.element.removeAttr('aria-live');
 		}
 	};
@@ -143,9 +141,7 @@
 		clearInterval(plugin.timer);
 		plugin.timer = null;
 
-		console.log('event.type', event.type);
 		if (event.type === 'focusin') {
-		// if (event.type === 'focus') {
 			plugin.element.attr({'aria-live': 'polite'});
 		}
 	};
